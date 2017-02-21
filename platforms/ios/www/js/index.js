@@ -20,6 +20,9 @@ var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        
+        document.getElementById("PushNotificationPermittion").addEventListener("click", PushNotificationPermittion);
+
     },
 
     // deviceready Event Handler
@@ -28,8 +31,11 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+        
     },
 
+    
+    
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
@@ -44,3 +50,34 @@ var app = {
 };
 
 app.initialize();
+
+function PushNotificationPermittion()
+{
+    var push = PushNotification.init({ "android": {"senderID": "721393051486"},
+                                     "ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} } );
+    
+    push.on('registration', function(data) {
+            // data.registrationId
+            console.log(data.registrationId)
+            document.getElementById("TokenID").innerHTML += data.registrationId;
+            alert(data.registrationId);
+            });
+    
+    push.on('notification', function(data) {
+            console.log(data.message)
+            console.log(data.title)
+            console.log(data.count)
+            // data.message,
+            // data.title,
+            // data.count,
+            // data.sound,
+            // data.image,
+            // data.additionalData
+            });
+    
+    push.on('error', function(e) {
+            // e.message
+            });
+
+
+}
